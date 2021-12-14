@@ -19,6 +19,7 @@ services:
     volumes:
       - ./resources:/app/resources
       - ./thumbnails:/app/thumbnails
+      - ./config:/app/config
     depends_on:
       - database
     restart: always
