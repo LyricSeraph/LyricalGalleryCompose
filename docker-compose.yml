@@ -1,0 +1,27 @@
+version: "3.1"
+services:
+  database:
+    # We use a mariadb image which supports both amd64 & arm64 architecture
+    image: mariadb:10.6.4-focal
+    container_name: database
+    command: '--default-authentication-plugin=mysql_native_password'
+    volumes:
+      - ./db_data:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=db
+      - MYSQL_USER=lyricalgallery
+      - MYSQL_PASSWORD=lyricalgallery
+  lyricalgallery:
+    build: .
+    container_name: lyricalgallery
+    volumes:
+      - ./resources:/app/resources
+      - ./thumbnails:/app/thumbnails
+    depends_on:
+      - database
+    restart: always
+    ports:
+      - 0.0.0.0:8080:80
+
